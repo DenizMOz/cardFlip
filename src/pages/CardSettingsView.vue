@@ -44,8 +44,6 @@ function addCard() {
         edittable: checked.value
     };
     main.addCard(newCard);
-    //TODO: add pinia store entry here
-    console.log(newCard);
     frontInput.value = '';
     backInput.value = '';
 }

@@ -19,8 +19,6 @@
 </template>
 
 <script setup>
-/* import { ref,onMounted } from 'vue'; */
-//
 const props = defineProps({
     content: {
         front: {},
@@ -29,11 +27,9 @@ const props = defineProps({
         key: {}
     }
 });
-/* const isFocused = ref(false); */
-//
 const emit = defineEmits(['flip', 'delete']);
-//
-/* const handleFlip = () => emit('flip', props.key); */
+// can use this emit later for flipping with vue transitions instead of css
+/* const handleFlip = () => emit('flip', props.content); */
 
 const handleDelete = () => {
     emit('delete', props.content);

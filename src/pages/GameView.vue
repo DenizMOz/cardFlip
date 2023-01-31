@@ -69,17 +69,14 @@ function randomCard() {
 }
 function guessCard() {
     if (cardGuess.value === main.deckOfCards[main.currentCardIndex].content.back) {
-        console.log('Correct!');
         showSuccess();
     } else {
-        console.log('Incorrect!');
         showFailure();
     }
 }
-
-function flipCard(card) {
-    //TODO: Flip the card here..
-}
+//TODO: Flip the card here with vue transition instead of using css
+/* function flipCard(card) {
+} */
 function deleteCard(content) {
     main.deleteCard(content);
 }
