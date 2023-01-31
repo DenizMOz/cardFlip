@@ -1,4 +1,5 @@
 <template>
+    <Toast />
     <div v-if="main.deckSize > 0" class="prompt">
         <div class="prompt__title">
             <h1>Memorization Game</h1>
@@ -27,6 +28,8 @@
         <div>
             <InputText type="text" v-model="cardGuess" class="cardGuessInput" @keypress.enter="guessCard()"></InputText>
         </div>
+
+        <Toast position="bottom-center" group="bc" />
     </div>
     <div v-else class="prompt">
         <h1>There are no cards to play with!</h1>
@@ -36,21 +39,25 @@
 </template>
 
 <script setup>
+import Toast from 'primevue/toast';
 import FlipCard from '../components/FlipCard.vue';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import { useToast } from 'primevue/usetoast';
 import { useCardStore } from '../store/cardStore';
 import { ref } from 'vue';
 //refs
 const main = useCardStore();
 const cardGuess = ref('');
+const toast = useToast();
+const showSuccess = () => {
+    toast.add({ severity: 'success', summary: 'Success Message', detail: 'Correct!', life: 3000 });
+};
+const showFailure = () => {
+    toast.add({ severity: 'error', summary: 'Fail Message', detail: 'Incorrect :(', life: 3000 });
+};
 
 //functions
-function guessCard() {
-    if (cardGuess.value === main.deckOfCards[main.currentCardIndex].content.back) {
-        console.log('Correct!');
-    } else {
-        console.log('Incorrect!');
-    }
-}
 function nextCard() {
     main.nextCard();
 }
@@ -59,6 +66,15 @@ function previousCard() {
 }
 function randomCard() {
     main.randomCard();
+}
+function guessCard() {
+    if (cardGuess.value === main.deckOfCards[main.currentCardIndex].content.back) {
+        console.log('Correct!');
+        showSuccess();
+    } else {
+        console.log('Incorrect!');
+        showFailure();
+    }
 }
 
 function flipCard(card) {
