@@ -13,17 +13,22 @@ export const useCardStore = defineStore('cardDeck', () => {
         deckSize.value++;
     }
     function deleteCard(content) {
+        this.prevCard();
         deckOfCards.value = deckOfCards.value.filter((c) => c.content.key !== content.key);
         deckSize.value--;
     }
     function nextCard() {
         if (currentCardIndex.value < deckSize.value) {
-            currentCardIndex.value++;
+            if (currentCardIndex.value === deckSize.value - 1) {
+                currentCardIndex.value = 0;
+            } else currentCardIndex.value++;
         }
     }
     function prevCard() {
         if (currentCardIndex.value > 0) {
-            currentCardIndex.value--;
+            if (currentCardIndex.value === 0) {
+                currentCardIndex.value = deckSize.value - 1;
+            } else currentCardIndex.value--;
         }
     }
     function randomCard() {

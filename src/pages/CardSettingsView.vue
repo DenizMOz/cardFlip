@@ -47,6 +47,9 @@ function addCard() {
     frontInput.value = '';
     backInput.value = '';
 }
+function deleteCard(content) {
+    main.deleteCard(content);
+}
 </script>
 
 <style scoped></style>
