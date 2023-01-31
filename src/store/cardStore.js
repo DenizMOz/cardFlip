@@ -13,9 +13,9 @@ export const useCardStore = defineStore('cardDeck', () => {
         deckSize.value++;
     }
     function deleteCard(content) {
-        this.prevCard();
         deckOfCards.value = deckOfCards.value.filter((c) => c.content.key !== content.key);
         deckSize.value--;
+        this.prevCard();
     }
     function nextCard() {
         if (currentCardIndex.value < deckSize.value) {
@@ -25,10 +25,10 @@ export const useCardStore = defineStore('cardDeck', () => {
         }
     }
     function prevCard() {
-        if (currentCardIndex.value > 0) {
-            if (currentCardIndex.value === 0) {
-                currentCardIndex.value = deckSize.value - 1;
-            } else currentCardIndex.value--;
+        if (currentCardIndex.value === 0) {
+            currentCardIndex.value = deckSize.value - 1;
+        } else if (currentCardIndex.value > 0) {
+            currentCardIndex.value--;
         }
     }
     function randomCard() {
