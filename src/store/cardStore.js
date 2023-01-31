@@ -5,6 +5,7 @@ export const useCardStore = defineStore('cardDeck', () => {
     const deckOfCards = ref([]);
     const cardCount = ref(0);
     const deckSize = ref(0);
+    const currentCardIndex = ref(0);
 
     function addCard(card) {
         cardCount.value++;
@@ -15,12 +16,31 @@ export const useCardStore = defineStore('cardDeck', () => {
         deckOfCards.value = deckOfCards.value.filter((c) => c.content.key !== content.key);
         deckSize.value--;
     }
+    function nextCard() {
+        if (currentCardIndex.value < deckSize.value) {
+            currentCardIndex.value++;
+        }
+    }
+    function prevCard() {
+        if (currentCardIndex.value > 0) {
+            currentCardIndex.value--;
+        }
+    }
+    function randomCard() {
+        if (deckSize.value > 0) {
+            currentCardIndex.value = Math.floor(Math.random() * deckSize.value);
+        }
+    }
 
     return {
         deckOfCards,
         cardCount,
         deckSize,
+        currentCardIndex,
         addCard,
-        deleteCard
+        deleteCard,
+        nextCard,
+        prevCard,
+        randomCard
     };
 });

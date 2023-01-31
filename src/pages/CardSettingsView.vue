@@ -6,10 +6,26 @@
         <Checkbox inputId="binary" v-model="checked" :binary="true" />
         <label for="binary">{{ checked }}</label>
         <div>Cards Added:{{ main.deckSize }}</div>
+
+        <div class="grid">
+            <div v-for="card of main.deckOfCards" class="col-2">
+                <FlipCard
+                    :content="{
+                        front: card.content.front,
+                        back: card.content.back,
+                        key: card.content.key,
+                        edittable: card.content.edittable
+                    }"
+                    @flip="(n) => flipCard(n)"
+                    @delete="(n) => deleteCard(n)"
+                ></FlipCard>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
+import FlipCard from '../components/FlipCard.vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
