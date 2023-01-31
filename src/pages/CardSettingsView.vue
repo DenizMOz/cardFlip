@@ -5,6 +5,7 @@
         <Button title="Add a card" icon="pi pi-plus-circle" class="p-button-rounded p-button-secondary" @click="addCard()"></Button>
         <Checkbox inputId="binary" v-model="checked" :binary="true" />
         <label for="binary">{{ checked }}</label>
+        <div>Cards Added:{{ main.deckSize }}</div>
     </div>
 </template>
 
