@@ -1,7 +1,7 @@
 <template>
     <div class="topPage">
         Vue Card Flip Vocab App
-        <router-link to="/">Add a Card</router-link>
+        <router-link to="/">Add Cards</router-link>
         <router-link to="/game">Play Game</router-link>
     </div>
 </template>

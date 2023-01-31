@@ -21,16 +21,36 @@
             <Button title="Next Card" icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" @click="nextCard()"></Button>
             <Button title="Random Card" icon="pi pi-bolt" class="p-button-rounded p-button-secondary" @click="randomCard()"></Button>
         </div>
+        <div class="prompt__cardcount">
+            <h3>Card {{ main.currentCardIndex + 1 }} of {{ main.deckSize }}</h3>
+        </div>
+        <div>
+            <InputText type="text" v-model="cardGuess" class="cardGuessInput" @keypress.enter="guessCard()"></InputText>
+        </div>
+    </div>
+    <div v-else class="prompt">
+        <h1>There are no cards to play with!</h1>
+        <h2>Go back and add some cards</h2>
+        <router-link to="/">Add Cards</router-link>
     </div>
 </template>
 
 <script setup>
 import FlipCard from '../components/FlipCard.vue';
 import { useCardStore } from '../store/cardStore';
+import { ref } from 'vue';
 //refs
 const main = useCardStore();
+const cardGuess = ref('');
 
 //functions
+function guessCard() {
+    if (cardGuess.value === main.deckOfCards[main.currentCardIndex].content.back) {
+        console.log('Correct!');
+    } else {
+        console.log('Incorrect!');
+    }
+}
 function nextCard() {
     main.nextCard();
 }
