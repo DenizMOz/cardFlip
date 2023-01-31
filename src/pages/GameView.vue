@@ -26,8 +26,8 @@ const main = useCardStore();
 function flipCard(card) {
     //TODO: Flip the card here..
 }
-function deleteCard(card) {
-    main.deleteCard(card);
+function deleteCard(content) {
+    main.deleteCard(content);
 }
 </script>
 
