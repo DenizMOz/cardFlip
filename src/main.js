@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import App from './App.vue';
 import 'primeicons/primeicons.css';
@@ -10,9 +11,11 @@ import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Checkbox from 'primevue/checkbox';
 import router from './router';
+const pinia = createPinia();
 const app = createApp(App);
 
 app.use(router);
+app.use(pinia);
 app.use(PrimeVue, { ripple: true });
 app.component('Button', Button).component('InputText', InputText).component('Checkbox', Checkbox);
 app.mount('#app');

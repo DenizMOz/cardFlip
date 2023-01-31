@@ -6,55 +6,32 @@
         <Checkbox inputId="binary" v-model="checked" :binary="true" />
         <label for="binary">{{ checked }}</label>
     </div>
-    <div class="grid">
-        <div v-for="(card, i) of deckCards" class="col-2">
-            <FlipCard
-                :content="{
-                    front: card.front,
-                    back: card.back,
-                    key: card.key,
-                    edittable: card.edittable
-                }"
-                @flip="(n) => flipCard(n)"
-                @delete="(n) => deleteCard(n)"
-            ></FlipCard>
-        </div>
-    </div>
 </template>
 
 <script setup>
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import FlipCard from '../components/FlipCard.vue';
 import Checkbox from 'primevue/checkbox';
+import { useCardStore } from '../store/cardStore';
 import { ref } from 'vue';
-//reactives
-const deckCards = ref([]);
-const cardCount = ref(0);
+//refs
+const main = useCardStore();
 const frontInput = ref('');
 const backInput = ref('');
 const checked = ref(false);
-
 //functions
 function addCard() {
-    cardCount.value++;
     const newCard = {
         front: frontInput.value,
         back: backInput.value,
-        key: cardCount.value,
         edittable: checked.value
     };
-    deckCards.value.push(newCard);
+    main.addCard(newCard);
+    //TODO: add pinia store entry here
     console.log(newCard);
-}
-function flipCard(card) {
-    //TODO: Flip the card here..
-}
-function deleteCard(card) {
-    console.log(card);
-    console.log(deckCards.value[0]);
-    deckCards.value = deckCards.value.filter((cardFromDeck) => cardFromDeck.key !== card.key);
+    frontInput.value = '';
+    backInput.value = '';
 }
 </script>
 
-<style></style>
+<style scoped></style>

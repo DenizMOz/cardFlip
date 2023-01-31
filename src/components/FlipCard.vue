@@ -25,8 +25,8 @@ const props = defineProps({
     content: {
         front: {},
         back: {},
-        key: {},
-        edittable: {}
+        edittable: {},
+        key: {}
     }
 });
 /* const isFocused = ref(false); */
@@ -35,7 +35,7 @@ const emit = defineEmits(['flip', 'delete']);
 //
 /* const handleFlip = () => emit('flip', props.key); */
 
-const handleDelete = (e) => {
+const handleDelete = () => {
     emit('delete', props.content);
 };
 </script>
