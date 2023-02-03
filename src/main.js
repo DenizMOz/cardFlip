@@ -11,6 +11,8 @@ import 'primevue/resources/primevue.min.css';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Checkbox from 'primevue/checkbox';
+import Divider from 'primevue/divider';
+//
 import router from './router';
 const pinia = createPinia();
 const app = createApp(App);
@@ -19,5 +21,5 @@ app.use(router);
 app.use(pinia);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
-app.component('Button', Button).component('InputText', InputText).component('Checkbox', Checkbox);
+app.component('Button', Button).component('InputText', InputText).component('Checkbox', Checkbox).component('Divider', Divider);
 app.mount('#app');

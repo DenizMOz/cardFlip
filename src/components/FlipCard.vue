@@ -1,18 +1,18 @@
 <template>
     <label class="card-wrap">
-        <input type="checkbox" class="flipcard" />
+        <input type="checkbox" :disabled="props.isDisabled" :checked="props.flipped" class="flipcard" />
         <div class="card">
             <div class="front card-face">
                 <div v-if="content.edittable">
                     <Button icon="pi pi-times" class="p-button-rounded p-button-warning" @click="handleDelete"></Button>
                 </div>
-                <p>{{ content.front }}</p>
+                <p>front:{{ content.front }}</p>
             </div>
             <div class="back card-face">
                 <div v-if="content.edittable">
                     <Button icon="pi pi-times" class="p-button-rounded p-button-warning" @click="handleDelete"></Button>
                 </div>
-                <p>{{ content.back }}</p>
+                <p>back:{{ content.back }}</p>
             </div>
         </div>
     </label>
@@ -25,6 +25,14 @@ const props = defineProps({
         back: {},
         edittable: {},
         key: {}
+    },
+    isDisabled: {
+        type: Boolean,
+        default: false
+    },
+    flipped: {
+        type: Boolean,
+        default: false
     }
 });
 const emit = defineEmits(['flip', 'delete']);
@@ -34,6 +42,7 @@ const emit = defineEmits(['flip', 'delete']);
 const handleDelete = () => {
     emit('delete', props.content);
 };
+//functions
 </script>
 <style>
 * {
@@ -79,7 +88,7 @@ const handleDelete = () => {
 }
 
 .front {
-    background-color: white;
+    background-color: rgb(173, 168, 168);
     transform: rotateY(0deg);
     text-align: center;
     color: rgba(6, 145, 24, 0.973);
