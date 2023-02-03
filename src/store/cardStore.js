@@ -8,7 +8,7 @@ export const useCardStore = defineStore('cardDeck', () => {
 
     function addCard(card) {
         cardIdCounter.value++;
-        deckOfCards.value.push({ content: { front: card.front, back: card.back, edittable: card.edittable, key: cardCount.value } });
+        deckOfCards.value.push({ content: { front: card.front, back: card.back, edittable: card.edittable, key: cardIdCounter.value } });
         deckSize.value++;
     }
     function deleteCard(content) {

@@ -1,6 +1,6 @@
 <template>
     <Toast />
-    <div v-if="deckSize > 0" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="prompt">
+    <div v-if="deckSize > 0" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="game-prompt">
         <div class="flex flex-column align-items-center justify-content-center" id="prompt__title">
             <h1>Memorization Game</h1>
             <h2>Try to guess the backside of the card</h2>
@@ -32,7 +32,7 @@
 
         <Toast position="bottom-center" group="bc" />
     </div>
-    <div v-else-if="main.deckSize === 0" class="flex flex-column align-items-center justify-content-center h-full mt-5">
+    <div v-else-if="main.deckSize === 0" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="go-back-prompt">
         <h1>There are no cards to play with!</h1>
         <h2>Go back and add some cards</h2>
         <router-link to="/">Add Cards</router-link>
