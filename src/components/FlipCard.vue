@@ -40,7 +40,7 @@ const emit = defineEmits(['flip', 'delete']);
 /* const handleFlip = () => emit('flip', props.content); */
 
 const handleDelete = () => {
-    emit('delete', props.content);
+    emit('delete', props.content.key);
 };
 //functions
 </script>

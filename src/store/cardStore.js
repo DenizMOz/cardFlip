@@ -14,7 +14,6 @@ export const useCardStore = defineStore('cardDeck', () => {
     function deleteCard(content) {
         deckOfCards.value = deckOfCards.value.filter((c) => c.content.key !== content.key);
         deckSize.value--;
-        this.prevCard();
     }
     return {
         deckOfCards,

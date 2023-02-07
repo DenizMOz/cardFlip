@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { createPinia } from 'pinia';
+import withUUID from 'vue-uuid';
 import PrimeVue from 'primevue/config';
 import App from './App.vue';
 import ToastService from 'primevue/toastservice';
@@ -14,11 +14,8 @@ import Checkbox from 'primevue/checkbox';
 import Divider from 'primevue/divider';
 //
 import router from './router';
-const pinia = createPinia();
-const app = createApp(App);
-
+const app = withUUID(createApp(App));
 app.use(router);
-app.use(pinia);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
 app.component('Button', Button).component('InputText', InputText).component('Checkbox', Checkbox).component('Divider', Divider);

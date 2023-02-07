@@ -8,10 +8,10 @@
         <div id="prompt__card">
             <FlipCard
                 :content="{
-                    front: gameDeck[currentCardIndex].content.front,
-                    back: gameDeck[currentCardIndex].content.back,
-                    key: gameDeck[currentCardIndex].content.key,
-                    edittable: gameDeck[currentCardIndex].content.edittable
+                    front: gameDeck[currentCardIndex].front,
+                    back: gameDeck[currentCardIndex].back,
+                    key: gameDeck[currentCardIndex].key,
+                    edittable: gameDeck[currentCardIndex].edittable
                 }"
                 :isDisabled="isCardDisabled"
                 :flipped="isCardFlipped"
@@ -32,7 +32,7 @@
 
         <Toast position="bottom-center" group="bc" />
     </div>
-    <div v-else-if="main.deckSize === 0" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="go-back-prompt">
+    <div v-else-if="deckSize === 0" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="go-back-prompt">
         <h1>There are no cards to play with!</h1>
         <h2>Go back and add some cards</h2>
         <router-link to="/">Add Cards</router-link>
@@ -46,34 +46,35 @@
 </template>
 
 <script setup>
+import { getCards } from '/service/CardService';
 import Toast from 'primevue/toast';
 import FlipCard from '../components/FlipCard.vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { useToast } from 'primevue/usetoast';
-import { useCardStore } from '../store/cardStore';
 import { ref, onMounted } from 'vue';
 //refs
-const main = useCardStore();
 const currentCardIndex = ref(0);
-const gameDeck = ref({});
+const gameDeck = ref([]);
 const deckSize = ref(0);
 const cardGuess = ref('');
+
 //flipping refs
 const isCardDisabled = ref(true);
 const isCardFlipped = ref(false);
 //toast stuff
 const toast = useToast();
 const showSuccess = () => {
-    toast.add({ severity: 'success', summary: 'Success Message', detail: 'Correct!', group: 'bc', life: 3000 });
+    toast.add({ severity: 'success', summary: 'Success Message', detail: 'Correct!', life: 3000 });
 };
 const showFailure = () => {
-    toast.add({ severity: 'error', summary: 'Fail Message', group: 'bc', detail: 'Incorrect :(', life: 3000 });
+    toast.add({ severity: 'error', summary: 'Fail Message', detail: 'Incorrect :(', life: 3000 });
 };
 //onMount
-onMounted(() => {
-    deckSize.value = main.deckSize;
-    gameDeck.value = JSON.parse(JSON.stringify(main.$state.deckOfCards));
+onMounted(async () => {
+    gameDeck.value = await getCards();
+    console.log(gameDeck.value);
+    deckSize.value = gameDeck.value.length;
 });
 
 //functions
@@ -96,14 +97,15 @@ function randomCard() {
         currentCardIndex.value = Math.floor(Math.random() * deckSize.value);
     }
 }
-function deleteCard(content) {
-    gameDeck.value = gameDeck.value.filter((c) => c.content.key !== content.key);
+function delCard(card) {
+    gameDeck.value = gameDeck.value.filter((c) => c.key !== card.key);
     deckSize.value--;
     prevCard();
 }
 
 function guessCard() {
-    if (cardGuess.value === gameDeck.value[currentCardIndex.value].content.back) {
+    //TODO: Disable the input field while the card is flipping
+    if (cardGuess.value === gameDeck.value[currentCardIndex.value].back) {
         isCardDisabled.value = false;
         isCardFlipped.value = !isCardFlipped.value;
         showSuccess();
@@ -111,16 +113,17 @@ function guessCard() {
         setTimeout(() => {
             isCardFlipped.value = false;
             isCardDisabled.value = true;
-            deleteCard(gameDeck.value[currentCardIndex.value].content);
+            cardGuess.value = '';
+            delCard(gameDeck.value[currentCardIndex.value]);
             randomCard();
         }, 4000);
     } else {
         showFailure();
     }
 }
-function playAgain() {
-    deckSize.value = main.deckSize;
-    gameDeck.value = JSON.parse(JSON.stringify(main.$state.deckOfCards));
+async function playAgain() {
+    gameDeck.value = await getCards();
+    deckSize.value = gameDeck.value.length;
     currentCardIndex.value = 0;
 }
 
