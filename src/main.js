@@ -1,5 +1,4 @@
 import { createApp } from 'vue';
-import withUUID from 'vue-uuid';
 import PrimeVue from 'primevue/config';
 import App from './App.vue';
 import ToastService from 'primevue/toastservice';
@@ -14,7 +13,7 @@ import Checkbox from 'primevue/checkbox';
 import Divider from 'primevue/divider';
 //
 import router from './router';
-const app = withUUID(createApp(App));
+const app = createApp(App);
 app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(ToastService);
