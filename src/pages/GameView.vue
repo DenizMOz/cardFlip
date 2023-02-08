@@ -19,15 +19,15 @@
             ></FlipCard>
         </div>
         <div class="flex gap-2 py-2" id="prompt__buttons">
-            <Button title="Previous Card" icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" @click="prevCard()"></Button>
-            <Button title="Next Card" icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" @click="nextCard()"></Button>
-            <Button title="Random Card" icon="pi pi-bolt" class="p-button-rounded p-button-secondary" @click="randomCard()"></Button>
+            <Button :disabled="guessDisable" title="Previous Card" icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" @click="prevCard()"></Button>
+            <Button :disabled="guessDisable" title="Next Card" icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" @click="nextCard()"></Button>
+            <Button :disabled="guessDisable" title="Random Card" icon="pi pi-bolt" class="p-button-rounded p-button-secondary" @click="randomCard()"></Button>
         </div>
         <div id="prompt__cardcount">
             <h3>Card {{ currentCardIndex + 1 }} of {{ deckSize }}</h3>
         </div>
         <div id="prompt__input">
-            <InputText v-bind:disabled="guessDisable" type="text" v-model="cardGuess" class="cardGuessInput" @keypress.enter="guessCard()"></InputText>
+            <InputText :disabled="guessDisable" type="text" v-model="cardGuess" class="cardGuessInput" @keypress.enter="guessCard()"></InputText>
         </div>
 
         <Toast position="bottom-center" group="bc" />
@@ -60,7 +60,6 @@ const deckSize = ref(0);
 const deckMounted = ref(false);
 const cardGuess = ref('');
 const guessDisable = ref(false);
-
 //flipping refs
 const isCardDisabled = ref(true);
 const isCardFlipped = ref(false);
@@ -80,7 +79,6 @@ onMounted(async () => {
     }
     deckSize.value = gameDeck.value.length;
 });
-
 //functions
 function nextCard() {
     if (currentCardIndex.value < deckSize.value) {
@@ -102,15 +100,11 @@ function randomCard() {
     }
 }
 function delCard(key) {
-    // debugger;
     gameDeck.value = gameDeck.value.filter((c) => c.key !== key);
     deckSize.value--;
     prevCard();
 }
-
 function guessCard() {
-    //TODO: Disable the input field while the card is flipping
-
     if (cardGuess.value === gameDeck.value[currentCardIndex.value].back) {
         guessDisable.value = true;
         isCardDisabled.value = false;
