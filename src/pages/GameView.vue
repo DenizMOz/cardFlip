@@ -1,7 +1,7 @@
 <template>
     <Toast />
-    <div v-if="deckSize > 0" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="game-prompt">
-        <div class="flex flex-column align-items-center justify-content-center" id="prompt__title">
+    <div v-if="deckSize > 0" class="flex flex-column align-items-center justify-content-center h-full mt-5 gap-2" id="game-prompt">
+        <div class="flex flex-column align-items-center justify-content-center gap-2" id="prompt__title">
             <h1>Memorization Game</h1>
             <h2>Try to guess the backside of the card</h2>
         </div>
@@ -18,7 +18,7 @@
                 @delete="(n) => delCard(n)"
             ></FlipCard>
         </div>
-        <div id="prompt__buttons">
+        <div class="flex gap-2 py-2" id="prompt__buttons">
             <Button title="Previous Card" icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" @click="prevCard()"></Button>
             <Button title="Next Card" icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" @click="nextCard()"></Button>
             <Button title="Random Card" icon="pi pi-bolt" class="p-button-rounded p-button-secondary" @click="randomCard()"></Button>
@@ -26,8 +26,8 @@
         <div id="prompt__cardcount">
             <h3>Card {{ currentCardIndex + 1 }} of {{ deckSize }}</h3>
         </div>
-        <div>
-            <InputText type="text" v-model="cardGuess" class="cardGuessInput" @keypress.enter="guessCard()"></InputText>
+        <div id="prompt__input">
+            <InputText v-bind:disabled="guessDisable" type="text" v-model="cardGuess" class="cardGuessInput" @keypress.enter="guessCard()"></InputText>
         </div>
 
         <Toast position="bottom-center" group="bc" />
@@ -40,7 +40,7 @@
     <div v-else class="flex flex-column align-items-center justify-content-center h-full mt-5" id="game-over-prompt">
         <h1>You've finished the deck!</h1>
         <h2>Go back and add some new cards, or play again.</h2>
-        <router-link to="/">Add Cards</router-link>
+        <router-link class="link" to="/">Add Cards</router-link>
         <Button title="Play Again" icon="pi pi-refresh" class="p-button-rounded p-button-secondary" @click="playAgain()"></Button>
     </div>
 </template>
@@ -59,6 +59,7 @@ const gameDeck = ref([]);
 const deckSize = ref(0);
 const deckMounted = ref(false);
 const cardGuess = ref('');
+const guessDisable = ref(false);
 
 //flipping refs
 const isCardDisabled = ref(true);
@@ -109,17 +110,21 @@ function delCard(key) {
 
 function guessCard() {
     //TODO: Disable the input field while the card is flipping
+
     if (cardGuess.value === gameDeck.value[currentCardIndex.value].back) {
+        guessDisable.value = true;
         isCardDisabled.value = false;
         isCardFlipped.value = !isCardFlipped.value;
+        cardGuess.value = '';
         showSuccess();
-
         setTimeout(() => {
-            isCardFlipped.value = false;
             isCardDisabled.value = true;
-            cardGuess.value = '';
+            isCardFlipped.value = false;
+        }, 3500);
+        setTimeout(() => {
             delCard(gameDeck.value[currentCardIndex.value].key);
             randomCard();
+            guessDisable.value = false;
         }, 4000);
     } else {
         showFailure();
@@ -130,8 +135,11 @@ async function playAgain() {
     deckSize.value = gameDeck.value.length;
     currentCardIndex.value = 0;
 }
-
-//TODO: Flip the card here with vue transition instead of using css.... maybe later?
-/* function flipCard(card) {
-} */
 </script>
+
+<style scoped>
+.link {
+    text-decoration: none;
+    outline: none;
+}
+</style>

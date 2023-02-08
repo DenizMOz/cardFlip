@@ -11,7 +11,10 @@
         <label for="binary">{{ checked ? 'Skippable Cards' : 'Permanent Cards' }}</label>
     </div>
     <Divider />
-    <div class="flex justify-content-center" id="card-counter">Cards Added:{{ cardList.length }}</div>
+    <div class="flex justify-content-center gap-3" id="card-counter">Cards Added:{{ cardList.length }}</div>
+    <div class="flex justify-content-center mb-3 p-2">
+        <Button title="Edit Cards" icon="pi pi-pencil" class="p-button-rounded p-button-secondary" @click="editCards()"></Button>
+    </div>
     <Divider />
     <div class="grid" id="cardInspector">
         <div v-for="card of cardList" class="col-2">
@@ -22,15 +25,16 @@
                     edittable: card.edittable,
                     key: card.key
                 }"
-                @delete="(n) => delCard(n)"
             ></FlipCard>
+            <div v-if="editMode === true">
+                <Button icon="pi pi-times" class="p-button-rounded p-button-danger" @click="delCard(card.key)"></Button>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import FlipCard from '../components/FlipCard.vue';
-import { uuid } from 'vue-uuid';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
@@ -41,14 +45,16 @@ const cardList = ref([]);
 const frontInput = ref('');
 const backInput = ref('');
 const checked = ref(false);
+const editMode = ref(false);
 //functions
+const editCards = () => {
+    editMode.value = !editMode.value;
+};
 async function storeCard() {
-    const uuid1 = uuid.v1();
     const newCard = {
         front: frontInput.value,
         back: backInput.value,
-        edittable: checked.value,
-        key: uuid1
+        edittable: checked.value
     };
     await addCard(newCard);
     frontInput.value = '';
@@ -64,5 +70,3 @@ onMounted(async () => {
     cardList.value = await getCards();
 });
 </script>
-
-<style scoped></style>

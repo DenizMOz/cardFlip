@@ -5,11 +5,17 @@
         </div>
         <Divider />
         <div class="flex justify-content-center mt-3" id="routerlinks">
-            <router-link to="/">Add Cards</router-link>
+            <router-link class="link" to="/"> Add Cards </router-link>
             <i class="pi pi-prime"></i>
-            <router-link to="/game">Play Game</router-link>
+            <router-link class="link" to="/game">Play Game</router-link>
         </div>
         <Divider />
     </div>
 </template>
 <script setup></script>
+<style scoped>
+.link {
+    text-decoration: none;
+    outline: none;
+}
+</style>
