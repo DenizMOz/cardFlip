@@ -15,7 +15,7 @@
                 }"
                 :isDisabled="isCardDisabled"
                 :flipped="isCardFlipped"
-                @delete="(n) => deleteCard(n)"
+                @delete="(n) => delCard(n)"
             ></FlipCard>
         </div>
         <div id="prompt__buttons">
@@ -32,7 +32,7 @@
 
         <Toast position="bottom-center" group="bc" />
     </div>
-    <div v-else-if="deckSize === 0" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="go-back-prompt">
+    <div v-else-if="deckMounted === false" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="go-back-prompt">
         <h1>There are no cards to play with!</h1>
         <h2>Go back and add some cards</h2>
         <router-link to="/">Add Cards</router-link>
@@ -57,6 +57,7 @@ import { ref, onMounted } from 'vue';
 const currentCardIndex = ref(0);
 const gameDeck = ref([]);
 const deckSize = ref(0);
+const deckMounted = ref(false);
 const cardGuess = ref('');
 
 //flipping refs
@@ -73,7 +74,9 @@ const showFailure = () => {
 //onMount
 onMounted(async () => {
     gameDeck.value = await getCards();
-    console.log(gameDeck.value);
+    if (gameDeck.value.length > 0) {
+        deckMounted.value = true;
+    }
     deckSize.value = gameDeck.value.length;
 });
 
@@ -97,8 +100,9 @@ function randomCard() {
         currentCardIndex.value = Math.floor(Math.random() * deckSize.value);
     }
 }
-function delCard(card) {
-    gameDeck.value = gameDeck.value.filter((c) => c.key !== card.key);
+function delCard(key) {
+    // debugger;
+    gameDeck.value = gameDeck.value.filter((c) => c.key !== key);
     deckSize.value--;
     prevCard();
 }
@@ -114,7 +118,7 @@ function guessCard() {
             isCardFlipped.value = false;
             isCardDisabled.value = true;
             cardGuess.value = '';
-            delCard(gameDeck.value[currentCardIndex.value]);
+            delCard(gameDeck.value[currentCardIndex.value].key);
             randomCard();
         }, 4000);
     } else {
