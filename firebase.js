@@ -1,7 +1,14 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-const firebaseConfigArr = [import.meta.env.VITE_FIREBASE_API_KEY, 'flipcard-storage.firebaseapp.com', 'flipcard-storage', 'flipcard-storage.appspot.com', import.meta.env.VITE_FIREBASE_SENDER_ID, import.meta.env.VITE_FIREBASE_APP_ID];
+const firebaseConfigArr = [
+    import.meta.env.VITE_FIREBASE_API_KEY,
+    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    import.meta.env.VITE_FIREBASE_SENDER_ID,
+    import.meta.env.VITE_FIREBASE_APP_ID
+];
 //The above array is used to create the firebaseConfig object below
 const firebaseConfig = {
     apiKey: firebaseConfigArr[0],

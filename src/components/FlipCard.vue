@@ -35,14 +35,10 @@ const props = defineProps({
         default: false
     }
 });
-const emit = defineEmits(['flip', 'delete']);
-// can use this emit later for flipping with vue transitions instead of css
-/* const handleFlip = () => emit('flip', props.content); */
-
+const emit = defineEmits(['delete']);
 const handleDelete = () => {
     emit('delete', props.content.key);
 };
-//functions
 </script>
 <style scoped>
 * {
