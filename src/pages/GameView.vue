@@ -1,7 +1,7 @@
 <template>
     <Toast />
-    <div v-if="deckSize > 0" class="flex flex-column align-items-center justify-content-center h-full mt-5 gap-2" id="game-prompt">
-        <div class="flex flex-column align-items-center justify-content-center gap-2" id="prompt__title">
+    <div v-if="deckSize > 0" class="flex flex-column align-items-center justify-content-center h-auto mt-1 gap-1" id="game-prompt">
+        <div class="flex flex-column align-items-center justify-content-center" id="prompt__title">
             <h1>Memorization Game</h1>
             <h2>Try to guess the backside of the card</h2>
         </div>
@@ -18,26 +18,30 @@
                 @delete="(n) => delCard(n)"
             ></FlipCard>
         </div>
-        <div class="flex gap-2 py-2" id="prompt__buttons">
-            <Button :disabled="guessDisable" title="Previous Card" icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" @click="prevCard()"></Button>
-            <Button :disabled="guessDisable" title="Next Card" icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" @click="nextCard()"></Button>
-            <Button :disabled="guessDisable" title="Random Card" icon="pi pi-bolt" class="p-button-rounded p-button-secondary" @click="randomCard()"></Button>
-        </div>
-        <div id="prompt__cardcount">
-            <h3>Card {{ currentCardIndex + 1 }} of {{ deckSize }}</h3>
-        </div>
-        <div id="prompt__input">
-            <InputText :disabled="guessDisable" type="text" v-model="cardGuess" class="cardGuessInput" @keypress.enter="guessCard()"></InputText>
-        </div>
 
-        <Toast position="bottom-center" group="bc" />
+        <div class="flex flex-column align-items-center justify-content-center">
+            <BlockUI :blocked="guessDisable">
+                <div class="flex gap-2 py-1" id="prompt__inputs">
+                    <Button title="Previous Card" icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" @click="prevCard()"></Button>
+                    <Button title="Next Card" icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" @click="nextCard()"></Button>
+                    <Button title="Random Card" icon="pi pi-bolt" class="p-button-rounded p-button-secondary" @click="randomCard()"></Button>
+                </div>
+            </BlockUI>
+            <div>
+                <h3>Card {{ currentCardIndex + 1 }} of {{ deckSize }}</h3>
+            </div>
+            <div>
+                <InputText :disabled="guessDisable" type="text" v-model="cardGuess" class="cardGuessInput" @keypress.enter="guessCard()"></InputText>
+            </div>
+        </div>
     </div>
-    <div v-else-if="deckMounted === false" class="flex flex-column align-items-center justify-content-center h-full mt-5" id="go-back-prompt">
+
+    <div v-else-if="deckMounted === false" class="flex flex-column align-items-center justify-content-center h-auto mt-5" id="go-back-prompt">
         <h1>There are no cards to play with!</h1>
         <h2>Go back and add some cards</h2>
         <router-link to="/">Add Cards</router-link>
     </div>
-    <div v-else class="flex flex-column align-items-center justify-content-center h-full mt-5" id="game-over-prompt">
+    <div v-else class="flex flex-column align-items-center justify-content-center h-auto mt-5" id="game-over-prompt">
         <h1>You've finished the deck!</h1>
         <h2>Go back and add some new cards, or play again.</h2>
         <router-link class="link" to="/">Add Cards</router-link>
