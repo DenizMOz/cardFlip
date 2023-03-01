@@ -24,7 +24,8 @@ const props = defineProps({
         front: {},
         back: {},
         edittable: {},
-        key: {}
+        key: {},
+        categoryID: {}
     },
     isDisabled: {
         type: Boolean,

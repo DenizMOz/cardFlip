@@ -1,26 +1,24 @@
-import { db } from '/firebase';
-import { collection, addDoc, getDoc, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
-
 async function addCard(card) {
-    const docRef = await addDoc(collection(db, 'Cards'), {
-        front: card.front,
-        back: card.back,
-        edittable: card.edittable
+    const response = await fetch(`http://localhost:3001/cards`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(card)
     });
-    return docRef.id;
+    return await response.json();
 }
 async function getCard(cardId) {
-    const cardSnapshot = await getDoc(doc(db, 'Cards', cardId));
-    return cardSnapshot.data();
+    const response = await fetch(`http://localhost:3001/cards/${cardId}`);
+    return await response.json();
 }
 async function getCards() {
-    const cardSnapshot = await getDocs(collection(db, 'Cards'));
-    return cardSnapshot.docs.map((doc) => {
-        return { key: doc.id, ...doc.data() };
-    });
+    const response = await fetch('http://localhost:3001/cards');
+    return await response.json();
 }
-async function deleteCard(key) {
-    await deleteDoc(doc(db, 'Cards', key));
+async function deleteCard(cardID) {
+    const response = await fetch(`http://localhost:3001/cards/${cardID}`, {
+        method: 'DELETE'
+    });
+    return await response.json();
 }
 
 export { addCard, getCards, getCard, deleteCard };

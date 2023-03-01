@@ -9,7 +9,6 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "firebase": "^9.17.1",
         "primeflex": "^3.3.0",
         "primeicons": "^6.0.1",
         "primevue": "^3.22.4",
